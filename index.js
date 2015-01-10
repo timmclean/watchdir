@@ -7,13 +7,16 @@ var Yargs = require('yargs');
 var FS_EVENTS = "attrib,modify,move,move_self,create,delete,delete_self";
 
 var argv = Yargs
-	.usage("Usage: $0 [-k] [-d <DELAY>] <cmd> <file1> [file2 ...]")
+	//.usage("Usage: $0 [-k] [-d <DELAY>] <cmd> <file1> [file2 ...]")
 	.alias('k', 'kill')
 	.describe('k', "Kill subprocess if a change is detected while the command is running")
 	.boolean('k')
 	.alias('d', 'delay')
 	.describe('d', "Number of milliseconds to wait before rerunning cmd")
 	.default('d', 100)
+	.alias('w', 'wait')
+	.describe('w', "Wait for first change before running cmd")
+	.boolean('w')
 	.demand(2)
 	.help('h')
 	.alias('h', 'help')
@@ -21,6 +24,7 @@ var argv = Yargs
 
 var shouldKill = argv.k;
 var delay = argv.d;
+var shouldWait = argv.w;
 var cmd = argv._[0];
 var files = argv._.slice(1);
 
@@ -50,6 +54,10 @@ function runCmd() {
 			runCmd();
 		}
 	});
+}
+
+if (!shouldWait) {
+	runCmd();
 }
 
 var onFileUpdate = _.debounce(runCmd, delay);
