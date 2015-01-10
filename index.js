@@ -7,15 +7,15 @@ var Yargs = require('yargs');
 var FS_EVENTS = "attrib,modify,move,move_self,create,delete,delete_self";
 
 var argv = Yargs
-	//.usage("Usage: $0 [-k] [-d <DELAY>] <cmd> <file1> [file2 ...]")
+	.usage("Usage: $0 [-k] [-d <DELAY>] [-w] <cmd> <path1> [path2 ...]")
 	.alias('k', 'kill')
 	.describe('k', "Kill subprocess if a change is detected while the command is running")
 	.boolean('k')
 	.alias('d', 'delay')
-	.describe('d', "Number of milliseconds to wait before rerunning cmd")
+	.describe('d', "Number of milliseconds to wait before rerunning <cmd>")
 	.default('d', 100)
 	.alias('w', 'wait')
-	.describe('w', "Wait for first change before running cmd")
+	.describe('w', "Wait for first change before running <cmd>")
 	.boolean('w')
 	.demand(2)
 	.help('h')
