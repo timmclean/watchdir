@@ -33,13 +33,12 @@ var queued = false;
 
 function runCmd() {
 	if (cmdProc) {
-		if (!shouldKill) {
-			queued = true;
-			return;
+		if (shouldKill) {
+			cmdProc.kill();
 		}
 
-		cmdProc.kill()
-		cmdProc = null;
+		queued = true;
+		return;
 	}
 
 	var p = ChildProcess.spawn('bash', ['-c', cmd], {stdio: 'inherit'});
@@ -51,7 +50,7 @@ function runCmd() {
 
 		if (queued) {
 			queued = false;
-			runCmd();
+			process.nextTick(runCmd);
 		}
 	});
 }
