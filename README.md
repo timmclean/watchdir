@@ -15,3 +15,7 @@ Options:
   -w, --wait   Wait for first change before running <cmd>                          
   -h, --help   Show help                                                           
 ```
+
+## Troubleshooting
+
+`Error: spawn inotifywait ENOENT` means that the command `inotifywait` was not found. Try `sudo apt install inotify-tools`.
